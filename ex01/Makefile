@@ -1,6 +1,6 @@
-NAME = Megaphone
+NAME = PhoneBook
 
-SRCS = megaphone.cpp
+SRCS = PhoneBook.cpp Contact.cpp main.cpp
 
 OBJ_DIR = obj/
 
