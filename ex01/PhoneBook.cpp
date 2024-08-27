@@ -9,16 +9,18 @@ PhoneBook::~PhoneBook() {
 }
 
 void PhoneBook::add() {
-	std::string firstName = this->promptFirstName();
-	std::string lastName = this->promptLastName();
-	std::string nickname = this->promptNickname();
-	std::string darkestSecret = this->promptDarkestSecret();
+	std::string& firstName = this->getLineWrapper("Enter first name");
+	std::string& lastName = this->getLineWrapper("Enter last name");
+	std::string& nickname = this->getLineWrapper("Enter nickname");
+	std::string& phoneNumber = this->getLineWrapper("Enter phone number");
+	std::string& darkestSecret = this->getLineWrapper("Enter darkest secret");
+
 
 	if (this->lastAddedContact == 7)
 		this->lastAddedContact = 0;
 	else
 		this->lastAddedContact++;
-	this->contacts[this->lastAddedContact] = Contact(firstName, lastName, \
+	this->contacts[this->lastAddedContact] = Contact(firstName, lastName, phoneNumber,
 													nickname, darkestSecret);
 }
 
@@ -26,7 +28,7 @@ void PhoneBook::search() {
 	std::cout << "     index|first name| last name|  nickname" << std::endl;
 	for (int i = 0; i < 8; i++)
 	{
-		if (!this->contacts[i].isInitialized)
+		if (!this->contacts[i]._isInitialized)
 			continue;
 		std::string firstName = this->contacts[i].getFirstName();
 		std::string lastName = this->contacts[i].getLastName();
@@ -38,7 +40,7 @@ void PhoneBook::search() {
 		std::cout << std::setw(10) << this->contacts[i].getNickname() << std::endl;
 	}
 	int index = this->promptIndex();
-	if (index < 0 || index > 7 || !this->contacts[index].isInitialized)
+	if (index < 0 || index > 7 || !this->contacts[index]._isInitialized)
 	{
 		std::cout << "Invalid index" << std::endl;
 		return;
@@ -87,4 +89,18 @@ std::string PhoneBook::promptDarkestSecret() {
 	std::cout << "Enter darkest secret: ";
 	std::getline(std::cin, darkestSecret);
 	return (darkestSecret);
+}
+
+std::string	PhoneBook::getLineWrapper(const std::string &prompt)
+{
+	std::string input;
+	std::cout << prompt << ": ";
+	std::getline(std::cin, input);
+	if (std::cin.eof())
+	{
+		std::cout << std::endl;
+		std::cout << "EOF detected, exiting..." << std::endl;
+		exit(0);
+	}
+	return input;
 }
