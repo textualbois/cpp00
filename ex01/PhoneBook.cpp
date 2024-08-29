@@ -9,19 +9,23 @@ PhoneBook::~PhoneBook() {
 }
 
 void PhoneBook::add() {
-	std::string& firstName = this->getLineWrapper("Enter first name");
-	std::string& lastName = this->getLineWrapper("Enter last name");
-	std::string& nickname = this->getLineWrapper("Enter nickname");
-	std::string& phoneNumber = this->getLineWrapper("Enter phone number");
-	std::string& darkestSecret = this->getLineWrapper("Enter darkest secret");
-
+	std::string firstName = this->getLineWrapper("Enter first name");
+	std::string lastName = this->getLineWrapper("Enter last name");
+	std::string nickname = this->getLineWrapper("Enter nickname");
+	std::string phoneNumber = this->getLineWrapper("Enter phone number");
+	std::string darkestSecret = this->getLineWrapper("Enter darkest secret");
+	if (firstName.empty() || lastName.empty() || nickname.empty() || phoneNumber.empty() || darkestSecret.empty())
+	{
+		std::cout << "Invalid input" << std::endl;
+		return;
+	}
 
 	if (this->lastAddedContact == 7)
 		this->lastAddedContact = 0;
 	else
 		this->lastAddedContact++;
-	this->contacts[this->lastAddedContact] = Contact(firstName, lastName, phoneNumber,
-													nickname, darkestSecret);
+	this->contacts[this->lastAddedContact] = Contact(firstName, lastName, nickname,
+													phoneNumber, darkestSecret);
 }
 
 void PhoneBook::search() {
@@ -34,10 +38,10 @@ void PhoneBook::search() {
 		std::string lastName = this->contacts[i].getLastName();
 		std::string nickname = this->contacts[i].getNickname();
 		std::cout << std::right;
-		std::cout << std::setw(10) << i << "|";
-		std::cout << std::setw(10) << this->contacts[i].getFirstName() << "|";
-		std::cout << std::setw(10) << this->contacts[i].getLastName() << "|";
-		std::cout << std::setw(10) << this->contacts[i].getNickname() << std::endl;
+		std::cout << std::setw(10) << i + 1 << "|";
+		std::cout << std::setw(10) << firstName << "|";
+		std::cout << std::setw(10) << lastName << "|";
+		std::cout << std::setw(10) << nickname << std::endl;
 	}
 	int index = this->promptIndex();
 	if (index < 0 || index > 7 || !this->contacts[index]._isInitialized)
@@ -48,6 +52,7 @@ void PhoneBook::search() {
 	std::cout << "First name: " << this->contacts[index].getFirstName() << std::endl;
 	std::cout << "Last name: " << this->contacts[index].getLastName() << std::endl;
 	std::cout << "Nickname: " << this->contacts[index].getNickname() << std::endl;
+	std::cout << "Phone number: " << this->contacts[index].getPhoneNumber() << std::endl;
 	std::cout << "Darkest secret: " << this->contacts[index].getDarkestSecret() << std::endl;
 }
 
@@ -56,7 +61,7 @@ int PhoneBook::promptIndex() {
 
 	std::cout << "Select index to display: ";
 	std::getline(std::cin, index);
-	return (std::atoi(index.c_str()));
+	return (std::atoi(index.c_str()) -1); // returns 0 - 1when failes to convert to integer
 }
 
 std::string PhoneBook::promptFirstName() {
