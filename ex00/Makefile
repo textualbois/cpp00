@@ -8,7 +8,7 @@ OBJS = $(addprefix $(OBJ_DIR), $(SRCS:.cpp=.o))
 
 CC = c++
 
-CFLAGS = -Wall -Wextra -Werror -std=c++98
+CFLAGS = -Wall -Wextra -Werror -std=c++17
 
 all: $(NAME)
 	@echo "all DONE"
