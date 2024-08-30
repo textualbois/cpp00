@@ -1,6 +1,6 @@
 NAME = Account
 
-SRCS = Account.cpp main.cpp
+SRCS = Account.cpp tests.cpp
 
 OBJ_DIR = obj/
 
